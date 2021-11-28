@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { RolesService } from 'src/roles/roles.service';
 import { BanUserDto } from './dto/ban-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { DeleteUserDto } from './dto/delete-user.dto';
@@ -8,10 +9,16 @@ import { User } from './users.model';
 @Injectable()
 export class UsersService {
 
-  constructor(@InjectModel(User) private readonly userRepository: typeof User) { }
+  constructor(
+    @InjectModel(User) private readonly userRepository: typeof User,
+    private readonly rolesService: RolesService
+  ) { }
 
   async createUser(userDto: CreateUserDto): Promise<User> {
     const newUser = await this.userRepository.create(userDto)
+    const role = await this.rolesService.getRoleByName("USER")
+    await newUser.$set('roles', [role.id])
+    newUser.roles = [role]
     return newUser
   }
 
@@ -31,7 +38,7 @@ export class UsersService {
   // async updateUser() { }
 
   async getAllUsers(): Promise<User[]> {
-    return await this.userRepository.findAll()
+    return await this.userRepository.findAll({ include: { all: true } })
   }
 
   async banUser(banUserDto: BanUserDto) {
