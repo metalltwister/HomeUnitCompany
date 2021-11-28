@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 
 async function startApp() {
   const app = await NestFactory.create(AppModule);
+  const PORT = process.env.PORT || 1337
 
   const config = new DocumentBuilder()
     .setTitle('Home Unit Company')
@@ -15,6 +16,8 @@ async function startApp() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api/docs', app, document);
 
-  await app.listen(3000);
+  await app.listen(PORT, () => { console.log(`Server started at port ${PORT}`) });
+
 }
+
 startApp();

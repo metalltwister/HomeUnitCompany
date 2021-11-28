@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { Role } from './roles/roles.model';
 import { UserRoles } from './roles/user-roles.model';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { UserRoles } from './roles/user-roles.model';
       autoLoadModels: true
     }),
     UsersModule,
-    RolesModule],
+    RolesModule,
+    AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

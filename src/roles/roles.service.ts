@@ -13,13 +13,10 @@ export class RolesService {
     return newRole
   }
 
-  // async getRoleById(value: string): Promise<Role> {
-  //   return await this.roleRepository.findOne({ where: { value } })
-  // }
-
   async getRoleByName(roleName: string): Promise<Role> {
     roleName = roleName.toUpperCase()
     const role = await this.roleRepository.findOne({ where: { roleName } })
     return role
   }
+
 }
