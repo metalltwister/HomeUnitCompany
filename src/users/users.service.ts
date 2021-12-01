@@ -41,7 +41,7 @@ export class UsersService {
     return await this.userRepository.findAll({ include: { all: true } })
   }
 
-  async banUser(banUserDto: BanUserDto) {
+  async banUser(banUserDto: BanUserDto): Promise<User> {
     const user = await this.userRepository.findByPk(banUserDto.userId)
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND)

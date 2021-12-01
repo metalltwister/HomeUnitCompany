@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/auth-jwt.guard';
 import { BanUserDto } from './dto/ban-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { DeleteUserDto } from './dto/delete-user.dto';
@@ -30,8 +31,9 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: HttpStatus.OK, type: [User] })
+  // @UseGuards(JwtAuthGuard)
   @Get()
-  getAllUsers() {
+  getAllUsers(): Promise<User[]> {
     return this.usersService.getAllUsers()
   }
 
