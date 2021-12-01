@@ -40,7 +40,7 @@ export class User extends Model<User, UserCreationAttributes> {
   @BelongsToMany(() => Role, () => UserRoles)
   roles: Role[]
 
-  // @BelongsToMany(() => Group, () => UserGroups)
-  // groups: Group[]
+  @BelongsToMany(() => Group, () => UserGroups)
+  groups: Group[]
 
 }

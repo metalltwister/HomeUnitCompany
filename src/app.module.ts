@@ -10,6 +10,8 @@ import { Role } from './roles/roles.model';
 import { UserRoles } from './roles/user-roles.model';
 import { AuthModule } from './auth/auth.module';
 import { GroupsModule } from './groups/groups.module';
+import { Group } from './groups/groups.model';
+import { UserGroups } from './groups/user-groups.model';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { GroupsModule } from './groups/groups.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Role, UserRoles],
+      models: [User, Role, UserRoles, Group, UserGroups],
       autoLoadModels: true
     }),
     UsersModule,
