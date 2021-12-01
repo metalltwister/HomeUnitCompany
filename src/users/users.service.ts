@@ -1,5 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { AddGroupDto } from 'src/groups/dto/add-group.dto';
+import { GroupsService } from 'src/groups/groups.service';
 import { SetRoleDto } from 'src/roles/dto/set-role.dto';
 import { RolesService } from 'src/roles/roles.service';
 import { BanUserDto } from './dto/ban-user.dto';
@@ -12,7 +14,8 @@ export class UsersService {
 
   constructor(
     @InjectModel(User) private readonly userRepository: typeof User,
-    private readonly rolesService: RolesService
+    private readonly rolesService: RolesService,
+    private readonly groupsService: GroupsService
   ) { }
 
   async createUser(userDto: CreateUserDto): Promise<User> {
@@ -59,6 +62,16 @@ export class UsersService {
     if (role && user) {
       await user.$add('role', role.id)
       return roleDto
+    }
+    throw new HttpException('User or role not found', HttpStatus.NOT_FOUND)
+  }
+
+  async addGroup(groupDto: AddGroupDto) {
+    const user = await this.userRepository.findByPk(groupDto.userId)
+    const group = await this.groupsService.getGroupByTitle(groupDto.groupTitle)
+    if (user && group) {
+      await user.$add('group', group.id)
+      return groupDto
     }
     throw new HttpException('User or role not found', HttpStatus.NOT_FOUND)
   }

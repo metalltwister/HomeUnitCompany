@@ -14,8 +14,8 @@ import { User } from 'src/users/users.model';
       UserGroups
     ])
   ],
-  providers: [GroupsService],
   controllers: [GroupsController],
+  providers: [GroupsService],
   exports: [GroupsService]
 })
 export class GroupsModule { }

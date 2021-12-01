@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth-jwt.guard';
+import { AddGroupDto } from 'src/groups/dto/add-group.dto';
 import { SetRoleDto } from 'src/roles/dto/set-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -48,6 +49,11 @@ export class UsersController {
   @Post('/role')
   setRole(@Body() roleDto: SetRoleDto) {
     return this.usersService.setRole(roleDto)
+  }
+
+  @Post('/group')
+  addGroup(@Body() groupDto: AddGroupDto) {
+    return this.usersService.addGroup(groupDto)
   }
 
 }
