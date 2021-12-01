@@ -10,9 +10,13 @@ import { UsersService } from './users.service';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([User, Role, UserRoles]),
+    SequelizeModule.forFeature([
+      User,
+      Role,
+      UserRoles,
+    ]),
     RolesModule,
-    forwardRef(() => AuthModule)
+    forwardRef(() => AuthModule),
   ],
   controllers: [UsersController],
   providers: [UsersService],
