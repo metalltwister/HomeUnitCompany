@@ -9,6 +9,7 @@ import { RolesService } from 'src/roles/roles.service';
 import { BanUserDto } from './dto/ban-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { DeleteUserDto } from './dto/delete-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './users.model';
 
 @Injectable()
@@ -41,8 +42,6 @@ export class UsersService {
   async getUserByPhone(phone: number): Promise<User> {
     return await this.userRepository.findOne({ where: { phone }, include: { all: true } })
   }
-
-  // async updateUser() { }
 
   async getAllUsers(): Promise<User[]> {
     return await this.userRepository.findAll({ include: { all: true } })
@@ -92,5 +91,22 @@ export class UsersService {
 
   async getFriends(userId: number) {
     return this.friendsService.getFriendsByUserId(userId)
+  }
+
+  async updateUser(userId: number, updateUser: UpdateUserDto): Promise<User> {
+    const user = await this.userRepository.findByPk(userId)
+    if (user) {
+      await user.update(updateUser)
+      return user
+    }
+    throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+  }
+
+  async getUserById(userId: number): Promise<User> {
+    const user = await this.userRepository.findByPk(userId, { include: { all: true } })
+    if (user) {
+      return user
+    }
+    throw new HttpException('User not found', HttpStatus.NOT_FOUND)
   }
 }
