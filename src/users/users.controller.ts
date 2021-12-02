@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth-jwt.guard';
+import { AddFriendDto } from 'src/friends/dto/add-friend.dto';
 import { AddGroupDto } from 'src/groups/dto/add-group.dto';
 import { SetRoleDto } from 'src/roles/dto/set-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
@@ -54,6 +55,17 @@ export class UsersController {
   @Post('/group')
   addGroup(@Body() groupDto: AddGroupDto) {
     return this.usersService.addGroup(groupDto)
+  }
+
+  @Post('/friend')
+  addFriend(@Body() friendDto: AddFriendDto) {
+    return this.usersService.addFriend(friendDto)
+  }
+
+  @Get('/:userId/friends')
+  getFriends(@Param('userId') userId: number) {
+    console.log(userId)
+    return this.usersService.getFriends(userId)
   }
 
 }

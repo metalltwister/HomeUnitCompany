@@ -12,6 +12,8 @@ import { AuthModule } from './auth/auth.module';
 import { GroupsModule } from './groups/groups.module';
 import { Group } from './groups/groups.model';
 import { UserGroups } from './groups/user-groups.model';
+import { UserFriends } from './friends/user-friends.model';
+import { FriendsModule } from './friends/friends.module';
 
 @Module({
   imports: [
@@ -25,13 +27,14 @@ import { UserGroups } from './groups/user-groups.model';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Role, UserRoles, Group, UserGroups],
+      models: [User, Role, UserRoles, Group, UserGroups, UserFriends],
       autoLoadModels: true
     }),
     UsersModule,
     RolesModule,
     AuthModule,
     GroupsModule,
+    FriendsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

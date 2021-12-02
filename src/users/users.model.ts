@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { BelongsToMany, Column, DataType, Model, Table } from "sequelize-typescript";
+import { UserFriends } from "src/friends/user-friends.model";
 import { Group } from "src/groups/groups.model";
 import { UserGroups } from "src/groups/user-groups.model";
 import { Role } from "src/roles/roles.model";
@@ -42,5 +43,8 @@ export class User extends Model<User, UserCreationAttributes> {
 
   @BelongsToMany(() => Group, () => UserGroups)
   groups: Group[]
+
+  @BelongsToMany(() => User, () => UserFriends, 'friendId')
+  friends: User[]
 
 }

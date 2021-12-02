@@ -1,5 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { AddFriendDto } from 'src/friends/dto/add-friend.dto';
+import { FriendsService } from 'src/friends/friends.service';
 import { AddGroupDto } from 'src/groups/dto/add-group.dto';
 import { GroupsService } from 'src/groups/groups.service';
 import { SetRoleDto } from 'src/roles/dto/set-role.dto';
@@ -15,7 +17,8 @@ export class UsersService {
   constructor(
     @InjectModel(User) private readonly userRepository: typeof User,
     private readonly rolesService: RolesService,
-    private readonly groupsService: GroupsService
+    private readonly groupsService: GroupsService,
+    private readonly friendsService: FriendsService
   ) { }
 
   async createUser(userDto: CreateUserDto): Promise<User> {
@@ -76,4 +79,18 @@ export class UsersService {
     throw new HttpException('User or role not found', HttpStatus.NOT_FOUND)
   }
 
+  async addFriend(friendDto: AddFriendDto) {
+    const user = await this.userRepository.findByPk(friendDto.userId)
+    const friend = await this.userRepository.findByPk(friendDto.friendId)
+    if (user && friend) {
+      await user.$add('friend', friend.id)
+      await friend.$add('friend', user.id)
+      return friendDto
+    }
+    throw new HttpException('One or both users not found', HttpStatus.NOT_FOUND)
+  }
+
+  async getFriends(userId: number) {
+    return this.friendsService.getFriendsByUserId(userId)
+  }
 }
