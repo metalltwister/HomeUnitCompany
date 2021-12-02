@@ -18,11 +18,11 @@ export class User extends Model<User, UserCreationAttributes> {
   @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
   id: number
 
-  @ApiProperty({ example: '88005553535', description: 'Unique phone number' })
+  @ApiProperty({ example: 88005553535, description: 'Unique phone number' })
   @Column({ type: DataType.BIGINT, unique: true, allowNull: false })
   phone: number
 
-  @ApiProperty({ example: '123456', description: 'User password' })
+  @ApiProperty({ example: '123456qwertyui', description: 'User password' })
   @Column({ type: DataType.STRING, allowNull: false })
   password: string
 
