@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, HttpStatus, Param, Post, UseGuards } fro
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth-jwt.guard';
 import { AddFriendDto } from 'src/friends/dto/add-friend.dto';
+import { UserFriends } from 'src/friends/user-friends.model';
 import { AddGroupDto } from 'src/groups/dto/add-group.dto';
 import { SetRoleDto } from 'src/roles/dto/set-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
@@ -47,21 +48,29 @@ export class UsersController {
     return this.usersService.banUser(userDto)
   }
 
+  @ApiOperation({ summary: 'Set role to user' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: SetRoleDto })
   @Post('/role')
   setRole(@Body() roleDto: SetRoleDto) {
     return this.usersService.setRole(roleDto)
   }
 
+  @ApiOperation({ summary: 'Add user to group' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: AddGroupDto })
   @Post('/group')
   addGroup(@Body() groupDto: AddGroupDto) {
     return this.usersService.addGroup(groupDto)
   }
 
+  @ApiOperation({ summary: 'Add friend to user' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: AddFriendDto })
   @Post('/friend')
   addFriend(@Body() friendDto: AddFriendDto) {
     return this.usersService.addFriend(friendDto)
   }
 
+  @ApiOperation({ summary: `Get user's friends by userId` })
+  @ApiResponse({ status: HttpStatus.OK, type: [UserFriends] })
   @Get('/:userId/friends')
   getFriends(@Param('userId') userId: number) {
     console.log(userId)
