@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { AddFriendDto } from 'src/friends/dto/add-friend.dto';
 import { FriendsService } from 'src/friends/friends.service';
+import { UserFriends } from 'src/friends/user-friends.model';
 import { AddGroupDto } from 'src/groups/dto/add-group.dto';
 import { GroupsService } from 'src/groups/groups.service';
 import { SetRoleDto } from 'src/roles/dto/set-role.dto';
@@ -58,7 +59,7 @@ export class UsersService {
     return user
   }
 
-  async setRole(roleDto: SetRoleDto) {
+  async setRole(roleDto: SetRoleDto): Promise<SetRoleDto> {
     const user = await this.userRepository.findByPk(roleDto.userId)
     const role = await this.rolesService.getRoleByName(roleDto.roleName)
     if (role && user) {
@@ -68,7 +69,7 @@ export class UsersService {
     throw new HttpException('User or role not found', HttpStatus.NOT_FOUND)
   }
 
-  async addGroup(groupDto: AddGroupDto) {
+  async addGroup(groupDto: AddGroupDto): Promise<AddGroupDto> {
     const user = await this.userRepository.findByPk(groupDto.userId)
     const group = await this.groupsService.getGroupByTitle(groupDto.groupTitle)
     if (user && group) {
@@ -78,7 +79,7 @@ export class UsersService {
     throw new HttpException('User or role not found', HttpStatus.NOT_FOUND)
   }
 
-  async addFriend(friendDto: AddFriendDto) {
+  async addFriend(friendDto: AddFriendDto): Promise<AddFriendDto> {
     const user = await this.userRepository.findByPk(friendDto.userId)
     const friend = await this.userRepository.findByPk(friendDto.friendId)
     if (user && friend) {
@@ -89,7 +90,7 @@ export class UsersService {
     throw new HttpException('One or both users not found', HttpStatus.NOT_FOUND)
   }
 
-  async getFriends(userId: number) {
+  async getFriends(userId: number): Promise<UserFriends[]> {
     return this.friendsService.getFriendsByUserId(userId)
   }
 

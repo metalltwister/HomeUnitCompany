@@ -1,0 +1,47 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserFriends {
+  id: Int!
+  userId: Int!
+  friendId: Int!
+}
+
+type Role {
+  id: Int!
+  roleName: String!
+  description: String!
+}
+
+type User {
+  id: Int!
+  phone: Float!
+  name: String
+  banned: Boolean!
+  banReason: String!
+}
+
+type Query {
+  getAllUsers: [User!]!
+  getFriends: [UserFriends!]!
+  getUserById(userId: Float!): User!
+  getRoleByName(roleName: String!): Role!
+}
+
+type Mutation {
+  createUser(userDto: CreateUserDto!): User!
+  deleteUser: String!
+  banUser: User!
+  setRole(roleDto: SetRoleDto!): Role!
+}
+
+input CreateUserDto {
+  phone: Float!
+  password: String!
+}
+
+input SetRoleDto {
+  roleName: String!
+  userId: Float!
+}

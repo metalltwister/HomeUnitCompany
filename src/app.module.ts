@@ -14,6 +14,8 @@ import { Group } from './groups/groups.model';
 import { UserGroups } from './groups/user-groups.model';
 import { UserFriends } from './friends/user-friends.model';
 import { FriendsModule } from './friends/friends.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -35,6 +37,11 @@ import { FriendsModule } from './friends/friends.module';
     AuthModule,
     GroupsModule,
     FriendsModule,
+    GraphQLModule.forRoot({
+      playground: true,
+      autoSchemaFile: join(process.cwd(), 'src/graphql-schema.gql'),
+      // sortSchema: true,
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

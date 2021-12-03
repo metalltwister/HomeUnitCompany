@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from 'src/users/users.model';
 import { RolesController } from './roles.controller';
 import { Role } from './roles.model';
 import { RolesService } from './roles.service';
 import { UserRoles } from './user-roles.model';
+import { RolesResolver } from './roles.resolver';
 
 @Module({
   imports: [
@@ -15,7 +17,7 @@ import { UserRoles } from './user-roles.model';
     ])
   ],
   controllers: [RolesController],
-  providers: [RolesService],
+  providers: [RolesService, RolesResolver],
   exports: [RolesService]
 })
 export class RolesModule { }
