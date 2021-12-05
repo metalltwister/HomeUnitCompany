@@ -21,8 +21,13 @@ export class UsersResolver {
     return this.usersService.createUser(userDto)
   }
 
+  @Mutation(() => User, { name: 'updateUser' })
+  updateUser(@Args('userId') userId: number, @Args('updateUser') updateUser: UpdateUserDto): Promise<User> {
+    return this.usersService.updateUser(userId, updateUser)
+  }
+
   @Mutation(() => String, { name: 'deleteUser' })
-  deleteUser(userDto: DeleteUserDto): Promise<string> {
+  deleteUser(@Args('userDto') userDto: DeleteUserDto): Promise<string> {
     return this.usersService.deleteUser(userDto)
   }
 
@@ -32,17 +37,17 @@ export class UsersResolver {
   }
 
   @Mutation(() => User, { name: 'banUser' })
-  banUser(userDto: BanUserDto): Promise<User> {
+  banUser(@Args('userDto') userDto: BanUserDto): Promise<User> {
     return this.usersService.banUser(userDto)
   }
 
-  @Mutation(() => Role, { name: 'setRole' })
+  // @Mutation(() => Role /* ??? */, { name: 'setRole' })
   setRole(@Args('roleDto') roleDto: SetRoleDto): Promise<SetRoleDto> {
     return this.usersService.setRole(roleDto)
   }
 
-  // @Mutation(() => AddGroupDto)
-  addGroup(groupDto: AddGroupDto): Promise<AddGroupDto> {
+  // @Mutation(() => AddGroupDto, { name: 'addGroup' })
+  addGroup(@Args('groupDto') groupDto: AddGroupDto): Promise<AddGroupDto> {
     return this.usersService.addGroup(groupDto)
   }
 
@@ -51,18 +56,20 @@ export class UsersResolver {
     return this.usersService.addFriend(friendDto)
   }
 
-  @Query(() => [UserFriends], { name: 'getFriends' })
-  getFriends(userId: number): Promise<UserFriends[]> {
-    console.log(userId)
-    return this.usersService.getFriends(userId)
+  @Query(() => User, { name: 'getUserByPhone' })
+  getUserByPhone(@Args('phone') phone: number): Promise<User> {
+    return this.usersService.getUserByPhone(phone)
   }
-
-  // updateUser(@Args('userId') userId: number, @Body() updateUser: UpdateUserDto): Promise<User> {
-  //   return this.usersService.updateUser(userId, updateUser)
-  // }
 
   @Query(() => User, { name: 'getUserById' })
   getUserById(@Args('userId') userId: number): Promise<User> {
     return this.usersService.getUserById(userId)
   }
+
+  @Query(() => [UserFriends], { name: 'getFriends' })
+  getFriends(@Args('userId') userId: number): Promise<UserFriends[]> {
+    console.log(userId)
+    return this.usersService.getFriends(userId)
+  }
+
 }

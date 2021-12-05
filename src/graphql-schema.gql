@@ -12,6 +12,7 @@ type Role {
   id: Int!
   roleName: String!
   description: String!
+  users: User!
 }
 
 type User {
@@ -20,20 +21,22 @@ type User {
   name: String
   banned: Boolean!
   banReason: String!
+  roles: Role!
 }
 
 type Query {
   getAllUsers: [User!]!
-  getFriends: [UserFriends!]!
+  getUserByPhone(phone: Float!): User!
   getUserById(userId: Float!): User!
+  getFriends(userId: Float!): [UserFriends!]!
   getRoleByName(roleName: String!): Role!
 }
 
 type Mutation {
   createUser(userDto: CreateUserDto!): User!
-  deleteUser: String!
-  banUser: User!
-  setRole(roleDto: SetRoleDto!): Role!
+  updateUser(updateUser: UpdateUserDto!, userId: Float!): User!
+  deleteUser(userDto: DeleteUserDto!): String!
+  banUser(userDto: BanUserDto!): User!
 }
 
 input CreateUserDto {
@@ -41,7 +44,17 @@ input CreateUserDto {
   password: String!
 }
 
-input SetRoleDto {
-  roleName: String!
+input UpdateUserDto {
+  phone: Int!
+  password: String!
+  name: String!
+}
+
+input DeleteUserDto {
+  phone: Int!
+}
+
+input BanUserDto {
   userId: Float!
+  banReason: String!
 }
