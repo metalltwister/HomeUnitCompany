@@ -1,8 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { AddFriendDto } from 'src/friends/dto/add-friend.dto';
-import { FriendsService } from 'src/friends/friends.service';
-import { UserFriends } from 'src/friends/user-friends.model';
 import { AddGroupDto } from 'src/groups/dto/add-group.dto';
 import { GroupsService } from 'src/groups/groups.service';
 import { SetRoleDto } from 'src/roles/dto/set-role.dto';
@@ -20,15 +17,19 @@ export class UsersService {
     @InjectModel(User) private readonly userRepository: typeof User,
     private readonly rolesService: RolesService,
     private readonly groupsService: GroupsService,
-    private readonly friendsService: FriendsService
   ) { }
 
   async createUser(userDto: CreateUserDto): Promise<User> {
-    const newUser = await this.userRepository.create(userDto)
+    const newUser = await this.userRepository.create(userDto, { include: { all: true }, raw: true, nest: true })
     const role = await this.rolesService.getRoleByName("USER")
     await newUser.$set('roles', [role.id])
     newUser.roles = [role]
+    console.log('newUser: ', newUser)
     return newUser
+    // return newUser.  .map(user => {
+    //   delete user.password
+    //   return user
+    // })
   }
 
   async deleteUser(userDto: DeleteUserDto): Promise<string> {
@@ -77,21 +78,6 @@ export class UsersService {
       return groupDto
     }
     throw new HttpException('User or role not found', HttpStatus.NOT_FOUND)
-  }
-
-  async addFriend(friendDto: AddFriendDto): Promise<AddFriendDto> {
-    const user = await this.userRepository.findByPk(friendDto.userId)
-    const friend = await this.userRepository.findByPk(friendDto.friendId)
-    if (user && friend) {
-      await user.$add('friend', friend.id)
-      await friend.$add('friend', user.id)
-      return friendDto
-    }
-    throw new HttpException('One or both users not found', HttpStatus.NOT_FOUND)
-  }
-
-  async getFriends(userId: number): Promise<UserFriends[]> {
-    return this.friendsService.getFriendsByUserId(userId)
   }
 
   async updateUser(userId: number, updateUser: UpdateUserDto): Promise<User> {

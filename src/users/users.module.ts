@@ -1,8 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { AuthModule } from 'src/auth/auth.module';
-import { FriendsModule } from 'src/friends/friends.module';
-import { UserFriends } from 'src/friends/user-friends.model';
 import { Group } from 'src/groups/groups.model';
 import { GroupsModule } from 'src/groups/groups.module';
 import { UserGroups } from 'src/groups/user-groups.model';
@@ -22,12 +20,10 @@ import { UsersResolver } from './users.resolver';
       UserRoles,
       Group,
       UserGroups,
-      UserFriends
     ]),
     RolesModule,
     forwardRef(() => AuthModule),
     GroupsModule,
-    FriendsModule
   ],
   controllers: [UsersController],
   providers: [UsersService, UsersResolver],

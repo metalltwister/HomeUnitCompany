@@ -1,7 +1,6 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { BelongsToMany, Column, DataType, Model, Table } from "sequelize-typescript";
-import { UserFriends } from "src/friends/user-friends.model";
 import { Group } from "src/groups/groups.model";
 import { UserGroups } from "src/groups/user-groups.model";
 import { Role } from "src/roles/roles.model";
@@ -16,7 +15,7 @@ interface UserCreationAttributes {
 @Table({ tableName: 'users' })
 export class User extends Model<User, UserCreationAttributes> {
 
-  @Field(type => Int)
+  @Field(() => Int)
   @ApiProperty({ example: '1', description: 'Unique user id' })
   @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
   id: number
@@ -30,17 +29,17 @@ export class User extends Model<User, UserCreationAttributes> {
   @Column({ type: DataType.STRING, allowNull: false })
   password: string
 
-  @Field(type => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   @ApiProperty({ example: 'Jhon Doe', description: `User's name` })
   @Column({ type: DataType.STRING, allowNull: true })
   name: string
 
-  @Field(type => Boolean)
+  @Field(() => Boolean)
   @ApiProperty({ example: 'true', description: 'Ban status' })
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
   banned: boolean
 
-  @Field(type => String)
+  @Field(() => String)
   @ApiProperty({ example: 'Breaking rules', description: 'Ban reason' })
   @Column({ type: DataType.STRING, allowNull: true })
   banReason: string
@@ -51,8 +50,5 @@ export class User extends Model<User, UserCreationAttributes> {
 
   @BelongsToMany(() => Group, () => UserGroups)
   groups: Group[]
-
-  @BelongsToMany(() => User, () => UserFriends, 'friendId')
-  friends: User[]
 
 }

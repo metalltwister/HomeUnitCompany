@@ -1,6 +1,4 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { AddFriendDto } from 'src/friends/dto/add-friend.dto';
-import { UserFriends } from 'src/friends/user-friends.model';
 import { AddGroupDto } from 'src/groups/dto/add-group.dto';
 import { SetRoleDto } from 'src/roles/dto/set-role.dto';
 import { Role } from 'src/roles/roles.model';
@@ -51,11 +49,6 @@ export class UsersResolver {
     return this.usersService.addGroup(groupDto)
   }
 
-  // @Mutation(() => AddFriendDto)
-  addFriend(friendDto: AddFriendDto): Promise<AddFriendDto> {
-    return this.usersService.addFriend(friendDto)
-  }
-
   @Query(() => User, { name: 'getUserByPhone' })
   getUserByPhone(@Args('phone') phone: number): Promise<User> {
     return this.usersService.getUserByPhone(phone)
@@ -64,12 +57,6 @@ export class UsersResolver {
   @Query(() => User, { name: 'getUserById' })
   getUserById(@Args('userId') userId: number): Promise<User> {
     return this.usersService.getUserById(userId)
-  }
-
-  @Query(() => [UserFriends], { name: 'getFriends' })
-  getFriends(@Args('userId') userId: number): Promise<UserFriends[]> {
-    console.log(userId)
-    return this.usersService.getFriends(userId)
   }
 
 }

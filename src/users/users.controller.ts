@@ -1,8 +1,6 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth-jwt.guard';
-import { AddFriendDto } from 'src/friends/dto/add-friend.dto';
-import { UserFriends } from 'src/friends/user-friends.model';
 import { AddGroupDto } from 'src/groups/dto/add-group.dto';
 import { SetRoleDto } from 'src/roles/dto/set-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
@@ -36,7 +34,7 @@ export class UsersController {
   @ApiResponse({ status: HttpStatus.OK, type: [User] })
   // @UseGuards(JwtAuthGuard)
   @Get()
-  getAllUsers(): Promise<User[]> {
+  getAllUsers(): Promise<any[]> {
     return this.usersService.getAllUsers()
   }
 
@@ -59,21 +57,6 @@ export class UsersController {
   @Post('/group')
   addGroup(@Body() groupDto: AddGroupDto) {
     return this.usersService.addGroup(groupDto)
-  }
-
-  @ApiOperation({ summary: 'Add friend to user' })
-  @ApiResponse({ status: HttpStatus.CREATED, type: AddFriendDto })
-  @Post('/friend')
-  addFriend(@Body() friendDto: AddFriendDto) {
-    return this.usersService.addFriend(friendDto)
-  }
-
-  @ApiOperation({ summary: `Get user's friends by userId` })
-  @ApiResponse({ status: HttpStatus.OK, type: [UserFriends] })
-  @Get('/:userId/friends')
-  getFriends(@Param('userId') userId: number) {
-    console.log(userId)
-    return this.usersService.getFriends(userId)
   }
 
   @ApiOperation({ summary: `Update part of user's info` })
